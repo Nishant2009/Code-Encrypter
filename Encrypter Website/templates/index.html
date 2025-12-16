@@ -1,136 +1,387 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emoji Code Encoder</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Emoji Code Encryptor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    
     <style>
+        /* --- DESIGN TOKENS (Variables) --- */
+        :root {
+            /* LIGHT THEME (Default) - "The Engineering Lab" */
+            --bg-color: #f3f4f6;
+            --pattern-color: rgba(99, 102, 241, 0.08); /* Subtle Indigo Grid */
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 1);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary-accent: #6366f1; /* Indigo */
+            --secondary-accent: #ec4899; /* Pink */
+            --input-bg: #ffffff;
+            --input-border: #cbd5e1;
+            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.1);
+            --code-text: #334155;
+        }
+
+        [data-theme="dark"] {
+            /* DARK THEME - "The Matrix/Cyberpunk" */
+            --bg-color: #0f172a;
+            --pattern-color: rgba(255, 255, 255, 0.05);
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary-accent: #818cf8;
+            --secondary-accent: #f472b6;
+            --input-bg: rgba(15, 23, 42, 0.6);
+            --input-border: #334155;
+            --shadow-soft: 0 20px 50px -10px rgba(0,0,0,0.5);
+            --code-text: #e2e8f0;
+        }
+
+        /* --- RESET & BASE --- */
+        * { box-sizing: border-box; transition: background-color 0.4s ease, color 0.2s ease, border-color 0.3s ease; }
+        
         body {
-            background-image: url("{{url_for('static', filename='image.jpg') }}");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center center;
-            font-family: 'Arial', sans-serif;
-            height: 100vh;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        textarea{
-            background-color: transparent !important;
-            color: #fff !important;
+        /* --- PATTERN BACKGROUND (Design Pattern) --- */
+        .grid-pattern {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* CSS Pattern: A geometric dot grid */
+            background-image: radial-gradient(var(--pattern-color) 1.5px, transparent 1.5px);
+            background-size: 24px 24px; /* Grid spacing */
+            z-index: -1;
+            /* Subtle parallax-like movement */
+            animation: drift 60s linear infinite;
         }
 
-        .btn{
-            background-color: rgba(0, 0, 0, 0.5) !important;
-            color: #fff !important;
+        @keyframes drift {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
         }
 
-        label, .modal-content {
-            background-color: rgba(0, 0, 0, 0.5) !important;
-            color: #fff !important;
+        /* --- MAIN CARD (Glassmorphism) --- */
+        .app-container {
+            width: 90%;
+            max-width: 750px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: var(--shadow-soft);
+            position: relative;
         }
 
-        ::placeholder {
-            color: #ddd !important;
-            opacity: 1;
+        /* --- THEME TOGGLE (Floating UI) --- */
+        .theme-switch-wrapper {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            z-index: 10;
         }
 
+        .theme-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-main);
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .theme-btn:hover { transform: translateY(-2px); color: var(--primary-accent); }
+
+        /* --- TYPOGRAPHY --- */
+        h2 {
+            font-weight: 600;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        /* --- INPUTS --- */
+        .form-section { margin-bottom: 25px; }
+        
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* The File Upload Zone */
+        .drop-zone {
+            border: 2px dashed var(--input-border);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: var(--input-bg);
+            transition: all 0.3s;
+        }
+        .drop-zone:hover {
+            border-color: var(--primary-accent);
+            background: rgba(99, 102, 241, 0.05);
+        }
+        .drop-zone i { font-size: 1.5rem; color: var(--primary-accent); margin-bottom: 10px; display: block; }
+        
+        /* Text Areas */
+        textarea {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            padding: 15px;
+            font-family: 'JetBrains Mono', monospace; /* Coding font */
+            font-size: 0.9rem;
+            color: var(--code-text);
+            outline: none;
+            resize: vertical;
+        }
+        textarea:focus {
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* --- BUTTONS (Neumorphism-inspired depth) --- */
+        .action-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn-main {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: transform 0.1s;
+        }
+        
         .btn-primary {
-            border-color: #fff !important;
+            background: var(--primary-accent);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-primary:active { transform: translateY(1px); }
+
+        .btn-secondary {
+            background: var(--bg-color); /* Matches background for subtle look */
+            border: 1px solid var(--input-border);
+            color: var(--text-main);
+        }
+        .btn-secondary:hover { border-color: var(--secondary-accent); color: var(--secondary-accent); }
+
+        /* --- OUTPUT AREA --- */
+        .output-wrapper { position: relative; }
+        .output-badge {
+            position: absolute;
+            top: -10px; right: 15px;
+            background: var(--secondary-accent);
+            color: white;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        /* --- FOOTER --- */
+        .footer-bar {
+            border-top: 1px solid var(--input-border);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-download {
+            background: #10b981; /* Success Green */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+        .btn-download:hover { background: #059669; }
+
+        /* --- MODAL --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
+        .modal-card {
+            background: var(--input-bg);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
         }
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <div class="card-body">
-            <form action="/" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="encoding_method" id="encoding_method" value="emoji">
-                <div class="form-group">
-                    <label for="fileInput" class="btn btn-primary">
-                        <span>Upload Python Code</span>
-                        <input type="file" style="display: none;" name="fileInput" id="fileInput">
-                    </label>
-                    <span id="fileLabel" class="ml-2"></span>
-                </div>
 
-                <div class="form-group">
-                    <label>Or Input Python Code:</label>
-                    <textarea name="input_code" id="textInput" rows="5" class="form-control" placeholder="Paste or type your code here...">{{ original_code }}</textarea>
-                </div>
+    <div class="grid-pattern"></div>
 
-                <input type="submit" value="Encode to Emoji Code" class="btn btn-primary mb-3" onclick="document.getElementById('encoding_method').value = 'emoji';">
-                <input type="submit" value="Encode to base64 Code" class="btn btn-warning mb-3" onclick="document.getElementById('encoding_method').value = 'base64';">
-
-                <div class="form-group">
-                    <label>Encoded Emoji Code:</label>
-                    <textarea rows="5" class="form-control" readonly placeholder="Encoded result will appear here...">{{ encoded_code }}</textarea>
-                </div>
-
-                <button type="button" class="btn btn-success" id="saveButton">Save File</button>
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#aboutModal">About</button>
-            </form>
+    <div class="app-container">
+        <div class="theme-switch-wrapper">
+            <button class="theme-btn" id="themeToggle" title="Toggle Dark Mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
         </div>
-    </div>
 
-    <div class="modal fade" id="aboutModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">About</h5>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    This tool encodes your Python code into a unique set of emojis and Base64 type Encoding.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <h2>Code Encryptor</h2>
+        <span class="subtitle">Secure logic obfuscation using Emoji & Base64 patterns.</span>
+
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="encoding_method" id="encoding_method" value="emoji">
+
+            <div class="form-section">
+                <label>Input Source</label>
+                <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span id="fileLabel">Click to upload .py file</span>
+                    <input type="file" name="fileInput" id="fileInput" style="display: none;">
                 </div>
             </div>
+
+            <div class="form-section">
+                <textarea name="input_code" id="textInput" rows="6" placeholder="Paste python code here...">{{ original_code }}</textarea>
+            </div>
+
+            <div class="action-row">
+                <button type="submit" class="btn-main btn-primary" onclick="document.getElementById('encoding_method').value = 'emoji';">
+                    <i class="fa-solid fa-icons"></i> Emoji Pattern
+                </button>
+                <button type="submit" class="btn-main btn-secondary" onclick="document.getElementById('encoding_method').value = 'base64';">
+                    <i class="fa-solid fa-code"></i> Base64 Pattern
+                </button>
+            </div>
+
+            <div class="form-section output-wrapper">
+                <label>Obfuscated Result</label>
+                <div class="output-badge">ReadOnly</div>
+                <textarea rows="6" readonly placeholder="Encryption output...">{{ encoded_code }}</textarea>
+            </div>
+
+            <div class="footer-bar">
+                <button type="button" class="btn-secondary" style="border:none; background:transparent; padding:0;" onclick="toggleModal()">
+                    <i class="fa-regular fa-circle-question"></i> How it works
+                </button>
+                <button type="button" class="btn-download" id="saveButton">
+                    <i class="fa-solid fa-download"></i> Save File
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-overlay" id="aboutModal">
+        <div class="modal-card">
+            <h3 style="color: var(--primary-accent)">Code Obfuscator</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
+                This tool <strong>transforms</strong> your Python code into an obfuscated format using either <strong>Emoji patterns</strong> or <strong>Base64 encoding</strong>. <br>
+                By <strong>converting</strong> code into visually distinct representations, it helps <strong>protect your logic</strong> from casual inspection while maintaining functionality. <br><br>
+                Simply <strong>upload your .py file or paste your code</strong>, choose an encoding method, and get your obfuscated output ready for use!
+            </p>
+            <button type="button" class="btn-main btn-primary" onclick="toggleModal()" style="width: 100%; margin-top:15px;">Got it</button>
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        function displayFileContent(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById('textInput').value = e.target.result;
-                };
-                reader.readAsText(input.files[0]);
+        // --- THEME LOGIC (Strategy Pattern) ---
+        const toggleBtn = document.getElementById('themeToggle');
+        const icon = toggleBtn.querySelector('i');
+        const html = document.documentElement;
+
+        // Check local storage or default to light
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        updateIcon(currentTheme);
+
+        toggleBtn.addEventListener('click', () => {
+            const newTheme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            if (theme === 'dark') {
+                icon.className = 'fa-solid fa-sun'; // Show sun to switch to light
+            } else {
+                icon.className = 'fa-solid fa-moon'; // Show moon to switch to dark
             }
         }
 
-        function download(filename, text) {
-            var element = document.createElement('a');
-            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-            element.setAttribute('download', filename);
-
-            element.style.display = 'none';
-            document.body.appendChild(element);
-
-            element.click();
-
-            document.body.removeChild(element);
-        }
-
-        document.getElementById('fileInput').addEventListener('change', function () {
-            displayFileContent(this);
+        // --- FILE UPLOAD LOGIC ---
+        document.getElementById('fileInput').addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('textInput').value = e.target.result;
+                    document.getElementById('fileLabel').innerHTML = `<strong>${this.files[0].name}</strong> loaded`;
+                    document.getElementById('fileLabel').style.color = "var(--primary-accent)";
+                };
+                reader.readAsText(this.files[0]);
+            }
         });
 
+        // --- SAVE LOGIC ---
         document.getElementById('saveButton').addEventListener('click', function () {
-            let encoded_code = document.querySelector('textarea[readonly]').value;
-            download('encoded_code.py', encoded_code);
+            const content = document.querySelector('textarea[readonly]').value;
+            if(!content.trim()) {
+                alert("Please encode some code first!");
+                return;
+            }
+            const link = document.createElement('a');
+            link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content);
+            link.download = 'obfuscated_script.py';
+            link.click();
         });
 
+        function toggleModal() {
+            document.getElementById('aboutModal').classList.toggle('open');
+        }
     </script>
 </body>
-
 </html>
