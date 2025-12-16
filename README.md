@@ -1,71 +1,93 @@
-# Code-Encrypter
+# 🔐 Code-Encrypter
 
-Code-Encrypter is a fun and unique tool that allows you to encrypt your Python code into a form of EMOJIs. This can be a great way to obfuscate your code or just to have a bit of fun!
+**Secure logic obfuscation with a touch of fun.** Code-Encrypter transforms your readable Python logic into functional but unreadable patterns using **Emojis** or **Base64** encoding.
 
-## Installation
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20On%20Hugging%20Face-blue?style=for-the-badge&logo=huggingface)](https://nishant-pratap-savita-code-encryptor.hf.space/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](https://choosealicense.com/licenses/mit/)
+[![Python](https://img.shields.io/badge/Python-3.8+-yellow?style=for-the-badge&logo=python)](https://www.python.org/)
 
-Clone the repository from GitHub:
+---
 
-```bash
-git clone https://github.com/Nishant2009/Code-Encrypter.git
-```
+## ✨ New Glassmorphism UI
+We've overhauled the interface with a modern **Glassmorphism design**, featuring a dynamic "Aurora" background and a seamless **Dark/Light mode switcher**.
 
-Navigate to the directory and install the required packages:
+### 🎨 Visual Gallery
 
-```bash
-cd Code-Encrypter
-pip install -r requirements.txt
-```
+| **Emoji Pattern (Dark Mode)** | **Base64 Pattern (Light Mode)** |
+|:---:|:---:|
+| ![Emoji Dark](images/emoji_dark.png) | ![Base64 Light](images/base64_light.png) |
 
-## Run the Code-Encrypter Application
+| **Emoji Pattern (Light Mode)** | **Base64 Pattern (Dark Mode)** |
+|:---:|:---:|
+| ![Emoji Light](images/emoji_light.png) | ![Base64 Dark](images/base64_dark.png) |
 
-You can run Code-Encrypter in two ways:
+---
 
-1. **Using the Executable:** You can also directly run the application using the provided executable file:
+## 🚀 Features
+* **Dual Encryption Patterns:** Choose between the fun **Emoji Pattern** 🐍 or the standard **Base64 Pattern** ⚙️.
+* **Theme Support:** Toggle between "Cyber Dark" and "Engineering Light" modes.
+* **Offline Capability:** The desktop executable runs entirely offline for maximum security.
+* **Cross-Platform:** Available as a Desktop GUI (Tkinter) and a Web App (Flask).
+* **Zero Infrastructure:** Requires no database or external API calls.
 
-```bash
-dist\Code Encryptor.exe
-```
+---
 
-2. **Using Python:** Run the `main.py` file and follow the instructions:
+## 🛠️ Installation
 
-```bash
-python main.py
-```
+### Option A: Web Version (Recommended)
+To run the modern web interface locally:
 
-## Usage
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/Nishant2009/Code-Encrypter.git
+    ```
+    ```bash
+    cd "Code-Encrypter/Encrypter Website"
+    ```
 
-1. **Launch the Application:** Start the application to view the main interface.
-2. **Select a File:** Click on the 'Choose File' button to select the desired Python file (.py) that you wish to encrypt.
-3. **View Original Code:** Once a file is selected, you can click on the 'Original Code' button to view the code in its original form.
-4. **Automatic Encryption:** Upon file selection, the code is automatically encrypted. The encrypted code is functional and can be executed, but its content is unreadable.
-5. **View Encrypted Code:** To view the encrypted version of the code, click on the 'Emoji encrypted Code' or 'Var encrypted code' button to view the Encrypted code in required encryption type.
-6. **Save Encrypted Code:** If you wish to save the encrypted code to a file, click on the 'Save File' button and choose a destination on your computer.
-7. **About Button:** Click on the 'About' button to view information about the application and its developer.
+2.  **Install dependencies:**
+    ```bash
+    pip install flask
+    ```
 
+3.  **Run the Flask App:**
+    ```bash
+    python app.py
+    ```
+    *Open `http://127.0.0.1:5000` in your browser.*
 
-## Website Version
+### Option B: Desktop Version (Legacy)
+For the classic desktop experience:
 
-To start the website application, navigate to the Encrypter Website folder and run the flask app:
+1.  **Navigate to root:**
+    ```bash
+    cd Code-Encrypter
+    ```
 
-```bash
-cd Encrypter Website
-python app.py
-```
+2.  **Run the Python Script:**
+    ```bash
+    python main.py
+    ```
 
-## Features
-- Encrypt your Python code into EMOJIs
-- Easy to use with GUI interface
-- Save your EMOJI code to a file
-- Provides Offline Encryption for Enhanced Security
-- Requires No Infrastructure or Network Access
-- Straightforward for All Users
+3.  **Or Run the Executable (Windows):**
+    ```bash
+    dist\Code Encryptor.exe
+    ```
 
-Please make sure to update tests as appropriate.
+---
 
-## License
+## 📖 Usage Guide
 
-[MIT](https://choosealicense.com/licenses/mit/)
+1.  **Select Source:** Click the upload area to drop a `.py` file, or paste your code directly into the editor.
+2.  **Choose Pattern:**
+    * Click **✨ Emoji Pattern** for a unique, symbol-based obfuscation.
+    * Click **🔒 Base64 Pattern** for standard string encoding.
+3.  **View & Save:** The obfuscated code appears instantly in the result box. Click **Save File** to download the ready-to-run script.
 
-## Support
-For any questions or issues, please open an issue on GitHub.
+---
+
+## 📄 License
+This project is licensed under the [MIT License](https://choosealicense.com/licenses/mit/).
+
+## 🤝 Support
+Found a bug? Have a feature request? Please [open an issue](https://github.com/Nishant2009/Code-Encrypter/issues) on GitHub.
