@@ -2,9 +2,6 @@ from flask import Flask, render_template, request, send_file
 import random
 from pprint import pformat
 import base64
-import webbrowser
-import threading
-from waitress import serve
 
 app = Flask(__name__)
 
@@ -61,18 +58,17 @@ def download():
 
 
 # For Development Server
-def start_server():
-    app.run(host='0.0.0.0', port=8080)
+# def start_server():
+#     app.run(host='0.0.0.0', port=8080)
 
-if __name__ == '__main__':
-    server_thread = threading.Thread(target=start_server)
-    server_thread.start()
-    url = "http://127.0.0.1:8080"
-    webbrowser.open(url)
-
-
-
+# if __name__ == '__main__':
+#     import webbrowser
+#     import threading
+#     server_thread = threading.Thread(target=start_server)
+#     server_thread.start()
+#     url = "http://127.0.0.1:8080"
+#     webbrowser.open(url)
 
 # # For Production Server
-# if __name__ == '__main__':
-#     serve(app, host='0.0.0.0', port=8080)
+if __name__ == '__main__':
+    app.run()
